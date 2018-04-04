@@ -1,6 +1,10 @@
 #!/bin/sh
 
-studio_formatter="$ANDROID_STUDIO/bin/format.sh"
+if [ "$(uname)" == "Darwin" ]; then
+  studio_formatter="$ANDROID_STUDIO/bin/format.sh"
+else
+  studio_formatter="$ANDROID_STUDIO/Contents/bin/format.sh"
+fi
 STUDIO_PROPERTIES="$(cd "$(dirname "$0")"; pwd -P)/idea.properties"
 export STUDIO_PROPERTIES
 "$studio_formatter" "$1" || {
