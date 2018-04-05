@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [[ -z "${ANDROID_STUDIO}" ]] || [[! -d "${ANDROID_STUDIO}"]]; then
+if [[ -z "${ANDROID_STUDIO}" ]] || [ ! -d "${ANDROID_STUDIO}" ]; then
   echo "ANDROID_STUDIO is undefined or contains path which doesn't not exist."
 fi
 
