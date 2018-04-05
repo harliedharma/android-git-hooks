@@ -2,6 +2,6 @@
 
 f="$(cd "$(dirname "$0")"; pwd -P)/../formatter"
 
-"$f" "$1" || {
+"$f" <&0 || {
   exit 1
 }

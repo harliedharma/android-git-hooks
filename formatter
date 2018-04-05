@@ -7,7 +7,7 @@ else
 fi
 STUDIO_PROPERTIES="$(cd "$(dirname "$0")"; pwd -P)/idea.properties"
 export STUDIO_PROPERTIES
-"$studio_formatter" "$1" || {
+xargs "$studio_formatter" "$1" <&0 || {
   echo 'fatal: `format` failed for:' "$1" >&2
   exit 1
 }

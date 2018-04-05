@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 root="$(git rev-parse --show-toplevel)"
 [ -d "$root" ] || exit 1
@@ -22,7 +22,7 @@ find "$owndir"/autoformat -type f $FIND_ARGS | {
     [ -f "$patterns" -o -f "$magic" ] || continue
 
     git diff --name-only --cached | {
-      labort=0
+      # labort=0
 
       while IFS= read -r orig ; do
         orig="${root}/${orig}"
@@ -43,13 +43,24 @@ find "$owndir"/autoformat -type f $FIND_ARGS | {
         # if none, ignore
         [ "$match_pattern" -o "$match_magic" ] ||  continue
 
-        "$formatter" "$orig" || labort=1
-        git add "$orig"
+        # "$formatter" "$orig" || labort=1
+        echo "$orig"
+        # git add "$orig"
       done
 
-      exit $labort
-    } || abort=1
+      # exit $labort
+    } | $formatter | xargs git add
+    abort=${PIPESTATUS[1]}
+
   done
 
-  exit $abort
+  if [ "$abort" -eq "0" ]; then
+    echo "Format code success."
+  else
+    echo "Format code failed."
+    exit $abort
+  fi
+
+
 }
+exit 0
