@@ -21,6 +21,7 @@ find "$owndir"/autoformat -type f $FIND_ARGS | {
     patterns="$formatter".patterns
     [ -f "$patterns" -o -f "$magic" ] || continue
 
+    mkfifo filelist
     git diff --name-only --cached | {
       # labort=0
 
@@ -49,9 +50,10 @@ find "$owndir"/autoformat -type f $FIND_ARGS | {
       done
 
       # exit $labort
-    } | $formatter | xargs git add
-    abort=${PIPESTATUS[1]}
-
+    } > filelist
+    $formatter < filelist || abort=1
+    cat filelist | xargs git add 
+    rm filelist
   done
 
   if [ "$abort" -eq "0" ]; then
