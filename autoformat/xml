@@ -1,7 +1,0 @@
-#!/bin/sh
-
-f="$(cd "$(dirname "$0")"; pwd -P)/../formatter"
-
-"$f" <&0 || {
-  exit 1
-}
