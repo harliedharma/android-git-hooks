@@ -14,7 +14,7 @@ else
 fi
 
 echo "Processing formatter script ..."
-git diff --name-only --cached --diff-filter=ACM > tmp-filelist.txt
+git diff --name-only --cached --diff-filter=ACM | sed -e "s/^/$root/" > tmp-filelist.txt
 "$owndir/formatter" < tmp-filelist.txt || abort=1
 cat tmp-filelist.txt | xargs git add 
 rm tmp-filelist.txt
