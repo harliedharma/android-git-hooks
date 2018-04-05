@@ -12,7 +12,7 @@ fi
 STUDIO_PROPERTIES="$(cd "$(dirname "$0")"; pwd -P)/idea.properties"
 export STUDIO_PROPERTIES
 
-lint_xml="$(cd "$(dirname "$0")"; pwd -P)/Project_Default.xml"
+lint_xml="$(cd "$(dirname "$0")"; pwd -P)/Linter.xml"
 
 "$studio_linter" "$1" "$lint_xml" "$2" || {
   echo 'fatal: `lint` failed' >&2
