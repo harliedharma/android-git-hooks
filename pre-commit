@@ -60,4 +60,6 @@ find "$owndir"/autoformat -type f $FIND_ARGS | {
 
 } || exit 1
 
+echo "Processing linter script ..."
+[ -d "$root/build/linter" ] && rm -rf "$root/build/linter"
 "$owndir/linter" "$root" "$root/build/linter" || exit 1
