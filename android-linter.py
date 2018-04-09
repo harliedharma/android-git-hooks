@@ -37,9 +37,9 @@ def main():
     for module in modules:
         issuesModule = issues[module] = {}
         gradlew = PROJECT_ROOT + "/gradlew"
-        report = PROJECT_ROOT + "/" + module + "/build/reports/lint-results.xml"
-        if os.path.exists(report):
-            os.remove(report)
+        report = PROJECT_ROOT + "/" + module + "/build/reports/lint-results" + (("-" + PRODUCT_FLAVOR) if PRODUCT_FLAVOR is not None else "" ) +  ".xml"
+        # if os.path.exists(report):
+        #     os.remove(report)
         cmd = gradlew + " " + module + ":lint" + PRODUCT_FLAVOR
         print(cmd)
         # os.system(cmd)
@@ -47,7 +47,7 @@ def main():
         process = subprocess.Popen([gradlew, module + ":lint" + PRODUCT_FLAVOR])
         process.wait()
         if process.returncode != 0:
-            print("Error: Lint failed")
+            print("Error: Lint failed on module " + module)
             sys.exit(1)
 
         if not os.path.exists(report):
