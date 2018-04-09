@@ -12,15 +12,15 @@ if [ "$OS_NAME" = "Darwin" ]; then
 else
   FIND_ARGS="-executable"
 fi
-
+tmp_file="$root/.git/tmp-filelist.txt"
 echo "Processing formatter script ..."
-git diff --name-only --cached --diff-filter=ACM | awk -v prefix="$root/" '{print prefix $0}' > tmp-filelist.txt
-"$owndir/formatter" < tmp-filelist.txt || abort=1
+git diff --name-only --cached --diff-filter=ACM | awk -v prefix="$root/" '{print prefix $0}' > "$tmp_file"
+"$owndir/formatter" < "$tmp_file" || abort=1
 cat tmp-filelist.txt | xargs git add 
 
 echo "Processing linter script ..."
 # [ -d "$root/build/linter" ] && rm -rf "$root/build/linter"
 # "$owndir/linter" "$root" "$root/build/linter" || exit 1
-"python" "$owndir/android-linter.py" "$root" < tmp-filelist.txt || exit 1
+"python" "$owndir/android-linter.py" "$root" < "$tmp_file" || exit 1
 # echo "Lint result can be found in PROJECT/build/linter"
-rm tmp-filelist.txt
+rm "$tmp_file"

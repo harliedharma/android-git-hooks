@@ -3,6 +3,7 @@ import sys
 import xml.etree.ElementTree as ET
 import subprocess
 
+PRODUCT_FLAVOR = "GeneralStaging"
 PROJECT_ROOT = None
 SDK_PATH = None
 
@@ -39,11 +40,11 @@ def main():
         report = PROJECT_ROOT + "/" + module + "/build/reports/lint-results.xml"
         if os.path.exists(report):
             os.remove(report)
-        cmd = gradlew + " " + module + ":lint"
+        cmd = gradlew + " " + module + ":lint" + PRODUCT_FLAVOR
         print(cmd)
         # os.system(cmd)
         # os.WEXITSTATUS(os.system(cmd))
-        process = subprocess.Popen([gradlew, module + ":lint"])
+        process = subprocess.Popen([gradlew, module + ":lint" + PRODUCT_FLAVOR])
         process.wait()
         if process.returncode != 0:
             print("Error: Lint failed")
