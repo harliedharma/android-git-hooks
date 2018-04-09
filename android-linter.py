@@ -67,6 +67,7 @@ def main():
         print("No changed module.")
     else:
         errors = 0
+        fatals = 0
         for module in issues:
             issuesModule = issues[module]
             print(module)
@@ -77,13 +78,15 @@ def main():
                     issueStr += str(issuesModule[sev]) + " " + sev + "(s); "
                     if sev == "Error":
                         errors += issuesModule[sev]
+                    elif sev == "Fatal":
+                        fatals += issuesModule[sev]
                 print(issueStr)
             else:
                 print("No issue found.")
             print()
         
-        if errors != 0:
-            print("Error: Lint failed because there are some error issues found.")
+        if errors != 0 or fatals != 0:
+            print("Error: Lint failed because there are some error or fatal issues found.")
             sys.exit(1)
 
 
