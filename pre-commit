@@ -16,7 +16,7 @@ tmp_file="$root/.git/tmp-filelist.txt"
 echo "Processing formatter script ..."
 git diff --name-only --cached --diff-filter=ACM | awk -v prefix="$root/" '{print prefix $0}' > "$tmp_file"
 "$owndir/formatter" < "$tmp_file" || exit 1
-cat tmp-filelist.txt | xargs git add
+cat $tmp_file | xargs git add
 
 echo "Processing linter script ..."
 # [ -d "$root/build/linter" ] && rm -rf "$root/build/linter"
