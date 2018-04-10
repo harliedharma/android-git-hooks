@@ -17,7 +17,7 @@ echo "Processing formatter script ..."
 git diff --name-only --cached --diff-filter=ACM | awk -v prefix="$root/" '{print prefix $0}' > "$tmp_file"
 "$owndir/formatter" < "$tmp_file" || abort=1
 cat tmp-filelist.txt | xargs git add
-[ "$abort" -eq "0" ] || exit 1
+[ $abort -eq 0 ] || exit 1
 
 echo "Processing linter script ..."
 # [ -d "$root/build/linter" ] && rm -rf "$root/build/linter"
