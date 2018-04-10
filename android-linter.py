@@ -49,9 +49,10 @@ def main():
         if process.returncode != 0:
             print("Error: Lint failed on module " + module)
             sys.exit(1)
+        print(report)
 
         if not os.path.exists(report):
-            print("Error: Lint result not found")
+            print("Error: Lint result not found on module " + module)
             sys.exit(1)
         xml = ET.parse(report)
         root = xml.getroot()
