@@ -26,7 +26,7 @@ def main():
         line = line.strip()
         if line != '' and os.path.exists(line):
             module = line[len(PROJECT_ROOT):]
-            if module[:1] == os.sep:
+            while module[0] == os.sep:
                 module = module[1:]
             folders = module.split(os.sep)
             if len(folders) == 1 or not os.path.exists(PROJECT_ROOT + "/" + folders[0] + "/build.gradle"):
@@ -37,7 +37,7 @@ def main():
     for module in modules:
         issuesModule = issues[module] = {}
         gradlew = PROJECT_ROOT + "/gradlew"
-        report = PROJECT_ROOT + "/" + module + "/build/reports/lint-results" + (("-" + PRODUCT_FLAVOR) if PRODUCT_FLAVOR is not None else "" ) +  ".xml"
+        report = PROJECT_ROOT + "/" + module + "/build/reports/lint-results" + (("-" + PRODUCT_FLAVOR[0].lower() + PRODUCT_FLAVOR[1:] ) if PRODUCT_FLAVOR is not None else "" ) +  ".xml"
         # if os.path.exists(report):
         #     os.remove(report)
         cmd = gradlew + " " + module + ":lint" + PRODUCT_FLAVOR
@@ -49,7 +49,8 @@ def main():
         if process.returncode != 0:
             print("Error: Lint failed on module " + module)
             sys.exit(1)
-        print(report)
+        
+        print("Parsing: " + report)
 
         if not os.path.exists(report):
             print("Error: Lint result not found on module " + module)
