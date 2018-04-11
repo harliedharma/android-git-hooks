@@ -6,20 +6,12 @@ import shutil
 
 PRODUCT_FLAVOR = "GeneralStaging"
 PROJECT_ROOT = None
-SDK_PATH = None
 
 def main():
     if len(sys.argv) < 2 or not os.path.exists(sys.argv[1]):
         print("There is missing argument.")
         sys.exit(1)
     PROJECT_ROOT = sys.argv[1]
-    # if "ANDROID_HOME" in os.environ:
-    #     SDK_PATH = os.environ["ANDROID_HOME"]
-    # elif "ANDROID_SDK_ROOT" in os.environ:
-    #     SDK_PATH = os.environ["ANDROID_SDK_ROOT"]
-    # else:
-    #     print("Android SDK path not found.\nSet the SDK Path to ANDROID_HOME or ANDROID_SDK_ROOT environtment variable.")
-    #     sys.exit(1)
 
     modules = {}
 
@@ -48,8 +40,6 @@ def main():
         report_filename = "lint-results" + (("-" + PRODUCT_FLAVOR[0].lower() + PRODUCT_FLAVOR[1:] ) if PRODUCT_FLAVOR is not None else "")
         report_xml = report_dir + "/" + report_filename + ".xml"
         report_html = report_dir + "/" + report_filename + ".html"
-        # if os.path.exists(report):
-        #     os.remove(report)
         cmd = gradlew + " " + module + ":lint" + PRODUCT_FLAVOR
         print(cmd)
         process = subprocess.Popen([gradlew, module + ":lint" + PRODUCT_FLAVOR])
