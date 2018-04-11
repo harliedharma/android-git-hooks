@@ -1,7 +1,7 @@
 # android-git-hooks
 Git hooks collection for Android project:
-- Pre-commit: Code autoformat with Intellij formatter in Android Studio
-- Pull request: Script to run Android gradle lint for changed modules only
+- [Pre-commit] Code autoformat with Intellij formatter in Android Studio
+- [Pull request] Script to run Android gradle lint for changed modules only
 
 Requirements
 ------------
