@@ -16,7 +16,7 @@ Add the contents of this repo to your root project
 3. `$ git subtree add --prefix=git-hooks/ android-git-hooks master`
 
 Any person who clones your project must symlink the folder into .git folder
-1. `$ mv .git/hooks .git/hooks.old && ln -s git-hooks .git/hooks`
+1. `$ mv .git/hooks .git/hooks.old && ln -s ../git-hooks .git/hooks`
 
 You can update the hooks inside your project
 1. `$ git remote add android-git-hooks https://github.com/harlie2120/android-git-hooks.git`
