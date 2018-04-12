@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import subprocess
 import shutil
 
-PRODUCT_FLAVOR = "GeneralStaging"
+PRODUCT_FLAVOR = None
 PROJECT_ROOT = None
 
 def main():
@@ -12,6 +12,8 @@ def main():
         print("There is missing argument.")
         sys.exit(1)
     PROJECT_ROOT = sys.argv[1]
+    if len(sys.argv) >= 3:
+        PRODUCT_FLAVOR = sys.argv[2]
 
     modules = {}
 
@@ -32,6 +34,7 @@ def main():
         shutil.rmtree(lint_results_dir)
     os.makedirs(lint_results_dir)
 
+    failedModules = {}
     issues = {}
     for module in modules:
         issuesModule = issues[module] = {}
@@ -46,12 +49,14 @@ def main():
         process.wait()
         if process.returncode != 0:
             print("Error: Lint failed on module " + module)
-            sys.exit(1)
+            failedModules[module] = 1
+            continue
         
         print("Parsing: " + report_xml)
         if not os.path.exists(report_xml):
             print("Error: Lint result not found on module " + module)
-            sys.exit(1)
+            failedModules[module] = 1
+            continue
         xml = ET.parse(report_xml)
         root = xml.getroot()
         for issue in root:
@@ -63,12 +68,19 @@ def main():
         shutil.copyfile(report_xml, lint_results_dir + "/" + module + "-" + report_filename + ".xml")
         shutil.copyfile(report_html, lint_results_dir + "/" + module + "-" + report_filename + ".html")
 
+    if len(failedModules) != 0:
+        print("Error: Lint failed on several modules:")
+        moduleList = ""
+        for module in failedModules:
+            moduleList += module + "; "
+        print(moduleList)
+        sys.exit(1)
+
     print("Lint Result:")
     if len(issues) == 0:
         print("No changed module.")
     else:
         errors = 0
-        fatals = 0
         for module in issues:
             issuesModule = issues[module]
             print(module)
@@ -77,16 +89,14 @@ def main():
                 issueStr = ""
                 for sev in issuesModule:
                     issueStr += str(issuesModule[sev]) + " " + sev + "(s); "
-                    if sev == "Error":
+                    if sev == "Error" or sev == "Fatal":
                         errors += issuesModule[sev]
-                    elif sev == "Fatal":
-                        fatals += issuesModule[sev]
                 print(issueStr)
             else:
                 print("No issue found.")
-            print()
+            print("")
         
-        if errors != 0 or fatals != 0:
+        if errors !=0:
             print("Error: Lint failed because there are some error or fatal issues found.")
             sys.exit(1)
 
