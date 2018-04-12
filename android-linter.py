@@ -9,7 +9,7 @@ PROJECT_ROOT = None
 
 def main():
     if len(sys.argv) < 2 or not os.path.exists(sys.argv[1]):
-        print("There is missing argument.")
+        print("Error: There is missing argument.")
         sys.exit(1)
     PROJECT_ROOT = sys.argv[1]
     if len(sys.argv) >= 3:
@@ -68,14 +68,7 @@ def main():
         shutil.copyfile(report_xml, lint_results_dir + "/" + module + "-" + report_filename + ".xml")
         shutil.copyfile(report_html, lint_results_dir + "/" + module + "-" + report_filename + ".html")
 
-    if len(failedModules) != 0:
-        print("Error: Lint failed on several modules:")
-        moduleList = ""
-        for module in failedModules:
-            moduleList += module + "; "
-        print(moduleList)
-        sys.exit(1)
-
+    abort = False
     print("Lint Result:")
     if len(issues) == 0:
         print("No changed module.")
@@ -98,8 +91,18 @@ def main():
         
         if errors !=0:
             print("Error: Lint failed because there are some error or fatal issues found.")
-            sys.exit(1)
+            abort = True
 
+    if len(failedModules) != 0:
+        print("Error: Lint failed on several modules:")
+        moduleList = ""
+        for module in failedModules:
+            moduleList += module + "; "
+        print(moduleList)
+        abort = True
+    
+    if abort:
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
