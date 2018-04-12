@@ -40,7 +40,9 @@ def main():
         issuesModule = issues[module] = {}
         gradlew = PROJECT_ROOT + "/gradlew"
         report_dir = PROJECT_ROOT + "/" + module + "/build/reports"
-        report_filename = "lint-results" + (("-" + PRODUCT_FLAVOR[0].lower() + PRODUCT_FLAVOR[1:] ) if PRODUCT_FLAVOR is not None else "")
+        report_filename = "lint-results"
+        if PRODUCT_FLAVOR is not None:
+            report_filename += "-" + PRODUCT_FLAVOR[0].lower() + PRODUCT_FLAVOR[1:]
         report_xml = report_dir + "/" + report_filename + ".xml"
         report_html = report_dir + "/" + report_filename + ".html"
         cmd = gradlew + " " + module + ":lint" + PRODUCT_FLAVOR
