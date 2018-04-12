@@ -4,10 +4,10 @@ import xml.etree.ElementTree as ET
 import subprocess
 import shutil
 
-PRODUCT_FLAVOR = None
-PROJECT_ROOT = None
-
 def main():
+    PRODUCT_FLAVOR = None
+    PROJECT_ROOT = None
+    
     if len(sys.argv) < 2 or not os.path.exists(sys.argv[1]):
         print("Error: There is missing argument.")
         sys.exit(1)
