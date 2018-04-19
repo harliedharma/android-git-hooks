@@ -1,0 +1,7 @@
+#!/bin/sh
+
+java_jar="$(cd "$(dirname "$0")"; pwd -P)/google-java-format-1.5-all-deps.jar"
+grep '.java$' <&0 | tr '\n' ' ' | xargs java -jar "$java_jar" -a -r --skip-sorting-imports || {
+  echo 'fatal: `import-optimizer` failed' >&2
+  exit 1
+}
